@@ -1,0 +1,12 @@
+# Maven
+backend/target/
+
+# Editor / sistema
+.vscode/
+.idea/
+*.log
+.DS_Store
+
+# Secretos locales
+*.env
+application-local.properties
