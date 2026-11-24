@@ -8,6 +8,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class ManejadorErrores {
@@ -20,6 +21,17 @@ public class ManejadorErrores {
     @ExceptionHandler(ConflictoException.class)
     public ResponseEntity<ErrorRespuesta> conflicto(ConflictoException e) {
         return responder(HttpStatus.CONFLICT, e.getMessage());
+    }
+
+    @ExceptionHandler(DatoInvalidoException.class)
+    public ResponseEntity<ErrorRespuesta> datoInvalido(DatoInvalidoException e) {
+        return responder(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    // Por ejemplo /api/libros/abc o ?estado=XYZ
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorRespuesta> tipoIncorrecto(MethodArgumentTypeMismatchException e) {
+        return responder(HttpStatus.BAD_REQUEST, "Valor inválido para el parámetro " + e.getName());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

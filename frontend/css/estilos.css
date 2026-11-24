@@ -1,0 +1,150 @@
+/* Biblioteca Web - estilos comunes */
+:root {
+  --tinta: #1c2421;
+  --tinta-suave: #4d5a55;
+  --papel: #f6f7f4;
+  --hoja: #ffffff;
+  --verde: #23533f;
+  --verde-claro: #e3eee8;
+  --laton: #9a6b16;
+  --rojo: #a33a2c;
+  --rojo-claro: #f8e5e1;
+  --linea: #d6ddd8;
+  --radio: 6px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--tinta);
+  background: var(--papel);
+}
+
+h1, h2 {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-weight: 600;
+  line-height: 1.2;
+}
+h1 { font-size: 2rem; margin: 0 0 .25rem; }
+h2 { font-size: 1.3rem; margin: 0 0 1rem; }
+
+/* Barra superior */
+.barra {
+  background: var(--verde);
+  color: #fff;
+  padding: .75rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .5rem 2rem;
+}
+.barra .marca {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-size: 1.25rem;
+  color: #fff;
+  text-decoration: none;
+}
+.barra nav { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; }
+.barra nav a { color: #d7e7de; text-decoration: none; padding: .25rem 0; border-bottom: 2px solid transparent; }
+.barra nav a:hover, .barra nav a[aria-current="page"] { color: #fff; border-bottom-color: #e2c27a; }
+
+main { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+.intro { color: var(--tinta-suave); margin: 0 0 1.5rem; max-width: 70ch; }
+
+/* Distribución: formulario a la izquierda, tabla a la derecha */
+.columnas > * { min-width: 0; } /* permite que la tabla se desplace sin ensanchar la página */
+.columnas { display: grid; grid-template-columns: minmax(260px, 340px) 1fr; gap: 1.5rem; align-items: start; }
+@media (max-width: 860px) { .columnas { grid-template-columns: 1fr; } }
+
+.panel { background: var(--hoja); border: 1px solid var(--linea); border-radius: var(--radio); padding: 1.25rem; }
+
+/* Formularios */
+label { display: block; font-size: .9rem; font-weight: 600; margin: .75rem 0 .25rem; }
+input, select {
+  width: 100%;
+  padding: .5rem .6rem;
+  font: inherit;
+  border: 1px solid #b9c4be;
+  border-radius: 4px;
+  background: #fff;
+  color: var(--tinta);
+}
+input:focus, select:focus, button:focus-visible, a:focus-visible { outline: 3px solid #e2c27a; outline-offset: 1px; }
+.casilla { display: flex; align-items: center; gap: .5rem; font-weight: 400; }
+.casilla input { width: auto; }
+.acciones-form { display: flex; gap: .5rem; margin-top: 1rem; flex-wrap: wrap; }
+
+button {
+  font: inherit;
+  padding: .5rem 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--verde);
+  background: var(--verde);
+  color: #fff;
+  cursor: pointer;
+}
+button:hover { filter: brightness(1.12); }
+button.secundario { background: #fff; color: var(--verde); }
+button.peligro { background: #fff; color: var(--rojo); border-color: var(--rojo); }
+button.chico { padding: .2rem .6rem; font-size: .85rem; }
+
+/* Filtros */
+.filtros { display: flex; flex-wrap: wrap; gap: .75rem; align-items: end; margin-bottom: 1rem; }
+.filtros > div { flex: 1 1 150px; }
+.filtros label { margin-top: 0; }
+
+/* Tablas */
+.tabla-contenedor { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+th, td { text-align: left; padding: .55rem .5rem; border-bottom: 1px solid var(--linea); vertical-align: top; }
+th { font-size: .85rem; color: var(--tinta-suave); font-weight: 600; }
+td.numero { text-align: right; font-variant-numeric: tabular-nums; }
+td.botones { white-space: nowrap; text-align: right; }
+td.botones button + button { margin-left: .25rem; }
+.vacio { color: var(--tinta-suave); padding: 1rem .5rem; }
+
+/* Estados */
+.estado { display: inline-block; padding: 0 .5rem; border-radius: 999px; font-size: .8rem; border: 1px solid; }
+.estado.ACTIVO { color: var(--verde); border-color: var(--verde); background: var(--verde-claro); }
+.estado.SUSPENDIDO, .estado.VENCIDO { color: var(--rojo); border-color: var(--rojo); background: var(--rojo-claro); }
+.estado.DEVUELTO { color: var(--tinta-suave); border-color: var(--linea); }
+
+/* Sello de fecha límite: el detalle propio de una biblioteca */
+.sello {
+  display: inline-block;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 700;
+  color: var(--laton);
+  border: 2px solid var(--laton);
+  border-radius: 3px;
+  padding: 0 .4rem;
+  transform: rotate(-2deg);
+  white-space: nowrap;
+}
+.sello.atrasado { color: var(--rojo); border-color: var(--rojo); }
+
+/* Mensajes de confirmación y error */
+.mensaje { display: none; margin-bottom: 1rem; padding: .75rem 1rem; border-radius: var(--radio); border-left: 5px solid; }
+.mensaje.ok { display: block; background: var(--verde-claro); border-color: var(--verde); }
+.mensaje.error { display: block; background: var(--rojo-claro); border-color: var(--rojo); }
+
+/* Inicio */
+.resumen { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0; }
+.resumen a {
+  flex: 1 1 200px;
+  display: block;
+  padding: 1.25rem;
+  background: var(--hoja);
+  border: 1px solid var(--linea);
+  border-top: 4px solid var(--verde);
+  border-radius: var(--radio);
+  color: var(--tinta);
+  text-decoration: none;
+}
+.resumen a:hover { border-top-color: var(--laton); }
+.resumen strong { display: block; font-size: 2.2rem; font-family: "Iowan Old Style", Palatino, Georgia, serif; color: var(--verde); }
+td.fecha { white-space: nowrap; font-variant-numeric: tabular-nums; }

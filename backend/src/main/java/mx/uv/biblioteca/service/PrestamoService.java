@@ -2,8 +2,10 @@ package mx.uv.biblioteca.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import mx.uv.biblioteca.dto.PrestamoActualizarRequest;
 import mx.uv.biblioteca.dto.PrestamoRequest;
 import mx.uv.biblioteca.exception.ConflictoException;
+import mx.uv.biblioteca.exception.DatoInvalidoException;
 import mx.uv.biblioteca.exception.RecursoNoEncontradoException;
 import mx.uv.biblioteca.model.EstadoPrestamo;
 import mx.uv.biblioteca.model.EstadoSocio;
@@ -32,7 +34,17 @@ public class PrestamoService {
         this.socios = socios;
     }
 
-    public List<Prestamo> listar() {
+    /** Lista préstamos. Los filtros son opcionales y se pueden combinar. */
+    public List<Prestamo> listar(Integer socioId, EstadoPrestamo estado) {
+        if (socioId != null && estado != null) {
+            return prestamos.findBySocioIdAndEstado(socioId, estado);
+        }
+        if (socioId != null) {
+            return prestamos.findBySocioId(socioId);
+        }
+        if (estado != null) {
+            return prestamos.findByEstado(estado);
+        }
         return prestamos.findAll();
     }
 
@@ -51,7 +63,8 @@ public class PrestamoService {
         if (socio.getEstado() == EstadoSocio.SUSPENDIDO) { // RN-03
             throw new ConflictoException("El socio " + socio.getId() + " está suspendido");
         }
-        if (prestamos.countBySocioIdAndEstado(socio.getId(), EstadoPrestamo.ACTIVO) >= MAX_PRESTAMOS_ACTIVOS) {
+        // RN-04: cuentan los préstamos sin devolver (ACTIVO o VENCIDO)
+        if (prestamos.countBySocioIdAndEstadoNot(socio.getId(), EstadoPrestamo.DEVUELTO) >= MAX_PRESTAMOS_ACTIVOS) {
             throw new ConflictoException("El socio ya tiene " + MAX_PRESTAMOS_ACTIVOS + " préstamos activos");
         }
         if (libro.getEjemplaresDisponibles() <= 0) { // RN-01
@@ -65,8 +78,49 @@ public class PrestamoService {
         p.setLibro(libro);
         p.setSocio(socio);
         p.setFechaPrestamo(LocalDate.now());
-        p.setFechaLimite(LocalDate.now().plusDays(DIAS_PRESTAMO));
+        p.setFechaLimite(LocalDate.now().plusDays(DIAS_PRESTAMO)); // RN-07
         p.setEstado(EstadoPrestamo.ACTIVO);
         return prestamos.save(p);
+    }
+
+    /** Registra la devolución: el préstamo queda DEVUELTO y el libro recupera un ejemplar (RN-02). */
+    @Transactional
+    public Prestamo devolver(Integer id) {
+        Prestamo p = obtener(id);
+        if (p.getEstado() == EstadoPrestamo.DEVUELTO) {
+            throw new ConflictoException("El préstamo " + id + " ya fue devuelto");
+        }
+        Libro libro = p.getLibro();
+        // RN-08: los disponibles nunca superan a los totales
+        if (libro.getEjemplaresDisponibles() < libro.getEjemplaresTotales()) {
+            libro.setEjemplaresDisponibles(libro.getEjemplaresDisponibles() + 1);
+            libros.save(libro);
+        }
+        p.setFechaDevolucion(LocalDate.now());
+        p.setEstado(EstadoPrestamo.DEVUELTO);
+        return prestamos.save(p);
+    }
+
+    /** Cambia la fecha límite (por ejemplo, para renovar el préstamo). */
+    @Transactional
+    public Prestamo actualizar(Integer id, PrestamoActualizarRequest req) {
+        Prestamo p = obtener(id);
+        if (p.getEstado() == EstadoPrestamo.DEVUELTO) {
+            throw new ConflictoException("No se puede modificar el préstamo " + id + " porque ya fue devuelto");
+        }
+        if (req.fechaLimite().isBefore(p.getFechaPrestamo())) {
+            throw new DatoInvalidoException("La fecha límite no puede ser anterior a la fecha de préstamo");
+        }
+        p.setFechaLimite(req.fechaLimite());
+        return prestamos.save(p);
+    }
+
+    /** Solo se eliminan préstamos ya devueltos, para no perder el control de un libro prestado. */
+    public void eliminar(Integer id) {
+        Prestamo p = obtener(id);
+        if (p.getEstado() != EstadoPrestamo.DEVUELTO) {
+            throw new ConflictoException("Solo se pueden eliminar préstamos devueltos");
+        }
+        prestamos.delete(p);
     }
 }

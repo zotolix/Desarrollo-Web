@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Categorías - Biblioteca Web</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="barra">
+    <a class="marca" href="index.html">Biblioteca Web</a>
+    <nav aria-label="Secciones">
+      <a href="index.html">Inicio</a>
+      <a href="libros.html">Libros</a>
+      <a href="categorias.html" aria-current="page">Categorías</a>
+      <a href="socios.html">Socios</a>
+      <a href="prestamos.html">Préstamos</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Categorías</h1>
+    <p class="intro">Una categoría con libros no se puede eliminar.</p>
+    <div id="mensaje" class="mensaje" role="status"></div>
+    <div class="columnas">
+      <section class="panel">
+        <h2 id="titulo-form">Nueva categoría</h2>
+        <form id="form-categoria">
+          <input type="hidden" id="cat-id">
+          <label for="cat-nombre">Nombre</label>
+          <input id="cat-nombre" required maxlength="80">
+          <label for="cat-descripcion">Descripción</label>
+          <input id="cat-descripcion" maxlength="255">
+          <div class="acciones-form">
+            <button type="submit" id="btn-guardar">Crear categoría</button>
+            <button type="button" class="secundario" id="btn-cancelar" hidden>Cancelar edición</button>
+          </div>
+        </form>
+      </section>
+      <section class="panel">
+        <h2>Lista de categorías</h2>
+        <div class="tabla-contenedor">
+          <table>
+            <thead><tr><th>Id</th><th>Nombre</th><th>Descripción</th><th></th></tr></thead>
+            <tbody id="tabla-categorias"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="js/api.js"></script>
+  <script src="js/categorias.js"></script>
+</body>
+</html>

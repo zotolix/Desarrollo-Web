@@ -19,9 +19,13 @@ public class LibroController {
         this.service = service;
     }
 
+    // GET /api/libros?titulo=&autor=&categoriaId=&disponible=true  (todos los filtros son opcionales)
     @GetMapping
-    public List<Libro> listar() {
-        return service.listar();
+    public List<Libro> listar(@RequestParam(required = false) String titulo,
+                              @RequestParam(required = false) String autor,
+                              @RequestParam(required = false) Integer categoriaId,
+                              @RequestParam(required = false) Boolean disponible) {
+        return service.buscar(titulo, autor, categoriaId, disponible);
     }
 
     @GetMapping("/{id}")
@@ -33,5 +37,16 @@ public class LibroController {
     @ResponseStatus(HttpStatus.CREATED)
     public Libro crear(@Valid @RequestBody LibroRequest req) {
         return service.crear(req);
+    }
+
+    @PutMapping("/{id}")
+    public Libro actualizar(@PathVariable Integer id, @Valid @RequestBody LibroRequest req) {
+        return service.actualizar(id, req);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void eliminar(@PathVariable Integer id) {
+        service.eliminar(id);
     }
 }

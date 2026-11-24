@@ -1,5 +1,6 @@
 -- Biblioteca Web - Esquema de base de datos (MySQL 8)
--- Ejecutar con: mysql -u root -p < database/esquema.sql
+-- Ejecutar con: sudo mysql < database/esquema.sql
+-- ATENCIÓN: borra las tablas y las vuelve a crear (se pierden los datos).
 
 CREATE DATABASE IF NOT EXISTS biblioteca
   CHARACTER SET utf8mb4
@@ -8,7 +9,7 @@ CREATE DATABASE IF NOT EXISTS biblioteca
 USE biblioteca;
 
 -- Usuario de la aplicación (cambiar la contraseña)
-CREATE USER IF NOT EXISTS 'biblio'@'localhost' IDENTIFIED BY '131122';
+CREATE USER IF NOT EXISTS 'biblio'@'localhost' IDENTIFIED BY 'cambiar_clave';
 GRANT ALL PRIVILEGES ON biblioteca.* TO 'biblio'@'localhost';
 FLUSH PRIVILEGES;
 
@@ -79,6 +80,7 @@ INSERT INTO libro (titulo, autor, isbn, anio_publicacion, ejemplares_totales, ej
   ('Breve historia del tiempo', 'Stephen Hawking', '9788498929478', 1988, 2, 2, 2),
   ('Clean Code', 'Robert C. Martin', '9780132350884', 2008, 2, 2, 3);
 
-INSERT INTO socio (nombre, correo, telefono) VALUES
-  ('Ana Pérez', 'ana@correo.com', '2281234567'),
-  ('Luis Hernández', 'luis@correo.com', '2287654321');
+INSERT INTO socio (nombre, correo, telefono, estado) VALUES
+  ('Ana Pérez', 'ana@correo.com', '2281234567', 'ACTIVO'),
+  ('Luis Hernández', 'luis@correo.com', '2287654321', 'ACTIVO'),
+  ('Pedro Gómez', 'pedro@correo.com', '2285556677', 'SUSPENDIDO');

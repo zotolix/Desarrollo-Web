@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Libros - Biblioteca Web</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="barra">
+    <a class="marca" href="index.html">Biblioteca Web</a>
+    <nav aria-label="Secciones">
+      <a href="index.html">Inicio</a>
+      <a href="libros.html" aria-current="page">Libros</a>
+      <a href="categorias.html">Categorías</a>
+      <a href="socios.html">Socios</a>
+      <a href="prestamos.html">Préstamos</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Libros</h1>
+    <p class="intro">Al crear un libro, todos sus ejemplares quedan disponibles. Un libro con préstamos no se puede eliminar.</p>
+    <div id="mensaje" class="mensaje" role="status"></div>
+    <div class="columnas">
+      <section class="panel">
+        <h2 id="titulo-form">Nuevo libro</h2>
+        <form id="form-libro">
+          <input type="hidden" id="libro-id">
+          <label for="libro-titulo">Título</label>
+          <input id="libro-titulo" required maxlength="200">
+          <label for="libro-autor">Autor</label>
+          <input id="libro-autor" required maxlength="150">
+          <label for="libro-isbn">ISBN</label>
+          <input id="libro-isbn" required maxlength="20">
+          <label for="libro-anio">Año de publicación</label>
+          <input id="libro-anio" type="number" min="1000" max="2100">
+          <label for="libro-totales">Ejemplares totales</label>
+          <input id="libro-totales" type="number" min="1" value="1" required>
+          <label for="libro-categoria">Categoría</label>
+          <select id="libro-categoria" required></select>
+          <div class="acciones-form">
+            <button type="submit" id="btn-guardar">Crear libro</button>
+            <button type="button" class="secundario" id="btn-cancelar" hidden>Cancelar edición</button>
+          </div>
+        </form>
+      </section>
+      <section class="panel">
+        <h2>Catálogo</h2>
+        <form id="form-filtros" class="filtros">
+          <div><label for="f-titulo">Título</label><input id="f-titulo"></div>
+          <div><label for="f-autor">Autor</label><input id="f-autor"></div>
+          <div><label for="f-categoria">Categoría</label><select id="f-categoria"></select></div>
+          <div><label class="casilla"><input type="checkbox" id="f-disponible"> Solo disponibles</label></div>
+          <div><button type="submit" class="secundario">Buscar</button></div>
+        </form>
+        <div class="tabla-contenedor">
+          <table>
+            <thead><tr><th>Título</th><th>Autor</th><th>ISBN</th><th>Categoría</th><th>Disponibles</th><th></th></tr></thead>
+            <tbody id="tabla-libros"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="js/api.js"></script>
+  <script src="js/libros.js"></script>
+</body>
+</html>

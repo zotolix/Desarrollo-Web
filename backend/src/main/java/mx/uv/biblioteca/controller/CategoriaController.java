@@ -34,4 +34,15 @@ public class CategoriaController {
     public Categoria crear(@Valid @RequestBody CategoriaRequest req) {
         return service.crear(req);
     }
+
+    @PutMapping("/{id}")
+    public Categoria actualizar(@PathVariable Integer id, @Valid @RequestBody CategoriaRequest req) {
+        return service.actualizar(id, req);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void eliminar(@PathVariable Integer id) {
+        service.eliminar(id);
+    }
 }

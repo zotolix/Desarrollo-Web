@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Biblioteca Web - Resumen</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 900px; padding: 0 1rem; color: #1f2933; }
+    h1 { color: #1e4e79; }
+    .tarjetas { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .tarjeta { border: 1px solid #d9e2ec; border-radius: 8px; padding: 1rem 1.5rem; min-width: 160px; }
+    .tarjeta strong { display: block; font-size: 2rem; color: #1e4e79; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+    th, td { border-bottom: 1px solid #d9e2ec; padding: .5rem; text-align: left; }
+    th { background: #f0f4f8; }
+  </style>
+</head>
+<body>
+  <h1>Biblioteca Web</h1>
+  <p>Resumen generado en el servidor con Spring Boot y Thymeleaf.</p>
+
+  <div class="tarjetas">
+    <div class="tarjeta"><strong th:text="${totalLibros}">0</strong>libros</div>
+    <div class="tarjeta"><strong th:text="${totalSocios}">0</strong>socios</div>
+    <div class="tarjeta"><strong th:text="${#lists.size(activos)}">0</strong>préstamos activos</div>
+  </div>
+
+  <h2>Préstamos activos</h2>
+  <p th:if="${activos.isEmpty()}">No hay préstamos activos.</p>
+  <table th:unless="${activos.isEmpty()}">
+    <thead>
+      <tr><th>#</th><th>Libro</th><th>Socio</th><th>Prestado</th><th>Fecha límite</th></tr>
+    </thead>
+    <tbody>
+      <tr th:each="p : ${activos}">
+        <td th:text="${p.id}">1</td>
+        <td th:text="${p.libro.titulo}">Título</td>
+        <td th:text="${p.socio.nombre}">Socio</td>
+        <td th:text="${p.fechaPrestamo}">2026-11-23</td>
+        <td th:text="${p.fechaLimite}">2026-11-30</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>La administración completa está en el frontend (<code>frontend/index.html</code>).</p>
+</body>
+</html>
