@@ -1,8 +1,7 @@
 # Reporte de Avance del Proyecto
-**Equipo:** _[nombre del equipo]_
-**Fecha:** _[dd/mm/2026]_
+**Equipo:** _2_
+**Fecha:** _[9/11/2026]_
 **Número de reporte:** 1
-**Repositorio GitHub:** _[https://github.com/usuario/desarrollo-web]_
 ---
 # 1. Actividades realizadas
 - Se definió el sistema: Biblioteca Web (catálogo de libros, socios y préstamos).
@@ -16,11 +15,11 @@
 # 2. Evidencias de trabajo
 | Actividad | Integrante responsable | Enlace a commit |
 |------------|------------------------|-----------------|
-| Creación del repositorio y estructura de carpetas | _[Integrante 1]_ | _[enlace]_ |
-| Requerimientos y reglas de negocio | _[Integrante 2]_ | _[enlace]_ |
+| Creación del repositorio y estructura de carpetas | _[Integrante 1]_ |
+| Requerimientos y reglas de negocio | _[Integrante 1]_ | _[enlace]_ |
 | Modelo de datos y `esquema.sql` | _[Integrante 1]_ | _[enlace]_ |
-| Definición de endpoints REST | _[Integrante 3]_ | _[enlace]_ |
-| Distribución de tareas y README inicial | _[Integrante 4]_ | _[enlace]_ |
+| Definición de endpoints REST | _[Integrante 2]_ | _[enlace]_ |
+| Distribución de tareas y README inicial | _[Integrante 2]_ |
 ---
 # 3. Problemas encontrados
 _[Completar con los problemas reales, por ejemplo: configuración de SSH/token de GitHub desde WSL, instalación de MySQL en WSL, activación del webhook. Si no hubo, indicarlo.]_
@@ -40,10 +39,8 @@ Documentar el uso de herramientas de inteligencia artificial durante el desarrol
 ---
 # 6. Participación individual
 Describir brevemente la contribución de cada integrante.
-- **Integrante 1:** _[nombre y contribución]_
-- **Integrante 2:** _[nombre y contribución]_
-- **Integrante 3:** _[nombre y contribución]_
-- **Integrante 4:** _[nombre y contribución]_
+- **Integrante 1:** _Daniel Peña Zoto_
+- **Integrante 2:** _Axel Yebra del Moral_
 ---
 # 7. Próximas actividades
 - Crear el proyecto Spring Boot en `backend/` (Web, JPA, MySQL Driver)
@@ -52,5 +49,3 @@ Describir brevemente la contribución de cada integrante.
 - Implementar POST y GET de cada entidad
 - Probar con CURL y preparar el reporte R2
 ---
-## Observaciones adicionales
-Cada hito se publica con su release en GitHub (este: `v0.1-diseno`).
