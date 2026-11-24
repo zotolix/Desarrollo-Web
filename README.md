@@ -15,81 +15,6 @@ Proyecto final de Desarrollo Web, LISTI, Universidad Veracruzana (agosto 2026 - 
 | 4. Frontend integrado con la API | `v0.4-integrado` | Listo |
 | 5. Versión candidata (pruebas, README, documentación) | `v1.0-rc` | Listo |
 
-## 1. Instalar las herramientas (WSL, Ubuntu)
-
-```bash
-sudo apt update
-sudo apt install -y git openjdk-17-jdk maven mysql-server
-java -version    # 17 o superior
-mvn -version
-```
-
-## 2. Clonar el repositorio
-
-```bash
-cd ~
-git clone https://github.com/<usuario>/desarrollo-web.git
-cd desarrollo-web
-```
-
-Trabajen dentro de la carpeta de Ubuntu (`~`), no en `/mnt/c/...`: ahí todo es más lento.
-
-## 3. Crear la base de datos
-
-1. Abran `database/esquema.sql` y cambien `cambiar_clave` por una contraseña propia. **No suban su contraseña real a GitHub.**
-2. Ejecuten el script. Crea la base `biblioteca`, el usuario `biblio`, las 4 tablas y datos de ejemplo (3 categorías, 3 libros y 3 socios; Pedro Gómez está SUSPENDIDO para probar la regla RN-03).
-
-```bash
-sudo service mysql start
-sudo mysql < database/esquema.sql
-sudo mysql -e 'USE biblioteca; SHOW TABLES;'   # deben salir categoria, libro, prestamo y socio
-```
-
-> El script **borra las tablas y las vuelve a crear**: se pierden los datos que hayan metido.
-> Si el usuario `biblio` ya existía con otra contraseña, el script no la cambia. Cámbienla así:
-> `sudo mysql -e "ALTER USER 'biblio'@'localhost' IDENTIFIED BY 'su_clave';"`
-
-## 4. Encender el backend
-
-```bash
-cd backend
-export DB_USER=biblio
-export DB_PASSWORD=su_clave
-mvn spring-boot:run
-```
-
-Listo cuando aparece `Started BibliotecaApplication`. La API queda en `http://localhost:8080/api`.
-La primera vez Maven descarga dependencias y tarda varios minutos. Dejen esa terminal abierta; para apagar el backend, `Ctrl+C`.
-Los `export` solo duran mientras la terminal esté abierta.
-
-## 5. Abrir el frontend
-
-En **otra** terminal de Ubuntu (el backend sigue encendido en la primera):
-
-```bash
-cd ~/desarrollo-web/frontend
-python3 -m http.server 5500
-```
-
-Abran `http://localhost:5500` en el navegador de Windows. Pantallas: Inicio, Libros, Categorías, Socios y Préstamos.
-También pueden abrir `http://localhost:8080/`, una página de resumen generada en el servidor con una plantilla Thymeleaf (`backend/src/main/resources/templates/resumen.html`).
-
-## 6. Probar
-
-**Pruebas automáticas** (no necesitan MySQL ni el backend encendido):
-
-```bash
-cd ~/desarrollo-web/backend
-mvn test          # debe terminar con BUILD SUCCESS
-```
-
-**Pruebas manuales con CURL** (con el backend encendido):
-
-```bash
-bash ~/desarrollo-web/backend/pruebas-curl.sh          # toda la API, muestra [OK] o [FALLA] en cada caso
-bash ~/desarrollo-web/backend/pruebas-curl-socios.sh   # solo el módulo de socios
-```
-
 ## API REST
 
 URL base: `http://localhost:8080/api`. Respuestas en JSON. Errores con el formato `{ "status": 409, "mensaje": "..." }`.
@@ -138,16 +63,6 @@ documentacion/  Diseño, guía de defensa, registro de IA (IAG/)
 r-act-1.md ... r-act-4.md   Reportes de avance
 ```
 
-## Problemas frecuentes
-
-| Síntoma | Solución |
-|---|---|
-| `Access denied for user 'biblio'` | `DB_PASSWORD` no coincide con la contraseña del script. Repitan los `export` o usen el `ALTER USER` del paso 3. |
-| `Communications link failure` | MySQL está apagado: `sudo service mysql start`. |
-| `Port 8080 was already in use` | Hay otro backend encendido. Ciérrenlo con `Ctrl+C`. |
-| `Schema-validation: missing table` | La base no se creó. Vuelvan a ejecutar `esquema.sql`. |
-| El frontend dice que no se pudo conectar | El backend no está encendido o no terminó de arrancar. |
-| `Permission denied (publickey)` | Falta agregar la llave SSH a GitHub, o clonen con HTTPS. |
 
 ## Integrantes
 
